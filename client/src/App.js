@@ -16,11 +16,22 @@ function App() {
       });
   }, [isAuth]);
 
+  const logout = () => {
+    fetch("/auth/logout")
+      .then()
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <a href="/admin">Admin Panel</a>
+        {isAuth && (
+          <a href="/" onClick={() => logout()}>
+            Logout
+          </a>
+        )}
         {isAuth && <p>Logged in as Admin</p>}
       </header>
       <main className="App-body">
