@@ -19,6 +19,7 @@ exports.post_create_post = async (req, res, next) => {
       db.postCreate(
         {
           user: req.body.user,
+          comments: [],
           title: req.body.title,
           text: req.body.text,
           isPublic: req.body.isPublic,
@@ -39,19 +40,13 @@ exports.post_create_post = async (req, res, next) => {
 
 //get all posts
 exports.posts_list_get = async (req, res) => {
-  if (req.isAuthenticated()) {
-    try {
-      const postList = await Post.find();
-      res.json(postList);
-    } catch (err) {
-      res.status(400);
-      res.statusMessage = "could not get list of all posts";
-      res.send();
-    }
-  } else {
-    res.status(403).send({
-      message: "Log in to access this route",
-    });
+  try {
+    const postList = await Post.find({ isPublic: true });
+    res.json(postList);
+  } catch (err) {
+    res.status(400);
+    res.statusMessage = "could not get list of all posts";
+    res.send();
   }
 };
 

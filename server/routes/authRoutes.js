@@ -7,7 +7,7 @@ require("../localStrategy");
 router.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/admin",
     failureRedirect: "/",
   })
 );

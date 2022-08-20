@@ -57,19 +57,24 @@ const postCreate = (postData, req, res) => {
   });
 };
 
-//save post to db
+//save comment to db
 const commentCreate = (commentData, req, res) => {
   const comment = new Comment({
+    post: commentData.post,
     user: commentData.user,
     text: commentData.text,
     timestamp: commentData.timestamp,
   });
 
-  comment.save((err) => {
+  comment.save(async (err) => {
     if (err) {
       res.statusCode = 500;
       res.send(err);
     } else {
+      //add comment to related post
+      const post = await Post.findById(commentData.post);
+      post.comments.push(comment);
+      post.save();
       res.redirect("/");
     }
   });

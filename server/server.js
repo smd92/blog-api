@@ -35,13 +35,9 @@ app.use(express.urlencoded({ extended: true })); // to support URL-encoded reque
 
 //routers
 app.use("/auth", authRouter);
-app.use("/user", userRouter);
-app.use("/post", postRouter);
-app.use("/comment", commentRouter);
-
-app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
-});
+app.use("/users", userRouter);
+app.use("/posts", postRouter);
+app.use("/comments", commentRouter);
 
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);

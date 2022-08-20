@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import logo from "./img/logo.svg";
 import "./css/App.css";
 import Landingpage from "./views/Landingpage";
+import Adminpanel from "./views/Adminpanel";
+import Posts from "./views/Posts";
 import LoginForm from "./views/LoginForm";
 
 function App() {
@@ -25,7 +27,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <a href="/">
+          <img src={logo} className="App-logo" alt="logo" />
+        </a>
         <a href="/admin">Admin Panel</a>
         {isAuth && (
           <a href="/" onClick={() => logout()}>
@@ -37,16 +41,12 @@ function App() {
       <main className="App-body">
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Landingpage />} />
+            <Route path="/" element={<Landingpage posts={<Posts />} />} />
             <Route path="loginForm" element={<LoginForm />} />
             <Route
               path="/admin"
               element={
-                isAuth === false ? (
-                  <Navigate to="/loginForm" />
-                ) : (
-                  <Landingpage />
-                )
+                isAuth === false ? <Navigate to="/loginForm" /> : <Adminpanel />
               }
             />
           </Routes>

@@ -4,32 +4,31 @@ const { check, validationResult } = require("express-validator");
 
 //add new comment
 exports.comment_create_post = async (req, res, next) => {
-  if (req.isAuthenticated()) {
-    try {
-      //validate and sanitize form data
+  try {
+    //validate and sanitize form data
+    if (req.body.user || req.body.user != "") {
       await check("user").trim().isString().run(req);
-      await check("text").trim().isString().run(req);
-
-      const result = validationResult(req);
-      if (!result.isEmpty()) {
-        return res.status(400).json({ errors: result.array() });
-      }
-      db.commentCreate(
-        {
-          user: req.body.user,
-          text: req.body.text,
-          timestamp: new Date(),
-        },
-        req,
-        res
-      );
-    } catch (err) {
-      console.log(err);
+    } else {
+      req.body.user = "Anon";
     }
-  } else {
-    res.status(403).send({
-      message: "Log in to access this route",
-    });
+    await check("text").trim().isString().run(req);
+
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      return res.status(400).json({ errors: result.array() });
+    }
+    db.commentCreate(
+      {
+        post: req.body.post,
+        user: req.body.user,
+        text: req.body.text,
+        timestamp: new Date(),
+      },
+      req,
+      res
+    );
+  } catch (err) {
+    console.log(err);
   }
 };
 
