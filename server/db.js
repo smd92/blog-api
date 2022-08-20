@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("./models/user");
+const Post = require("./models/post");
+const Comment = require("./models/comment");
 
 //Set up mongoose connection
 const connectToMongo = () => {
@@ -30,7 +32,45 @@ const userCreate = (userData, req, res) => {
       res.statusCode = 500;
       res.send(err);
     } else {
-      res.send({ success: true });
+      res.redirect("/");
+    }
+  });
+};
+
+//save post to db
+const postCreate = (postData, req, res) => {
+  const post = new Post({
+    user: postData.user,
+    title: postData.title,
+    text: postData.text,
+    isPublic: postData.isPublic,
+    timestamp: postData.timestamp,
+  });
+
+  post.save((err) => {
+    if (err) {
+      res.statusCode = 500;
+      res.send(err);
+    } else {
+      res.redirect("/");
+    }
+  });
+};
+
+//save post to db
+const commentCreate = (commentData, req, res) => {
+  const comment = new Comment({
+    user: commentData.user,
+    text: commentData.text,
+    timestamp: commentData.timestamp,
+  });
+
+  comment.save((err) => {
+    if (err) {
+      res.statusCode = 500;
+      res.send(err);
+    } else {
+      res.redirect("/");
     }
   });
 };
@@ -38,4 +78,6 @@ const userCreate = (userData, req, res) => {
 module.exports = {
   connectToMongo,
   userCreate,
+  postCreate,
+  commentCreate,
 };

@@ -6,6 +6,8 @@ const passport = require("passport");
 const db = require("./db");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
+const postRouter = require("./routes/postRoutes");
+const commentRouter = require("./routes/commentRoutes");
 
 const PORT = process.env.PORT || 3001;
 
@@ -34,6 +36,8 @@ app.use(express.urlencoded({ extended: true })); // to support URL-encoded reque
 //routers
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
+app.use("/post", postRouter);
+app.use("/comment", commentRouter);
 
 app.get("/api", (req, res) => {
   res.json({ message: "Hello from server!" });
