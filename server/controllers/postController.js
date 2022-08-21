@@ -50,6 +50,22 @@ exports.posts_list_get = async (req, res) => {
   }
 };
 
+//get post by ID
+exports.post_byID_get = async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const post = await Post.findById(req.params.id);
+      res.json(post);
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
+  }
+};
+
 //delete post by ID
 exports.post_delete = async (req, res) => {
   if (req.isAuthenticated()) {

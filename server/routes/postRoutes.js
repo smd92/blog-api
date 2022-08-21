@@ -8,6 +8,9 @@ router.post("/", postController.post_create_post);
 //get list of all posts
 router.get("/", postController.posts_list_get);
 
+//get post by ID
+router.get("/:id", postController.post_byID_get);
+
 //delete post by ID
 router.delete("/:id", postController.post_delete);
 
