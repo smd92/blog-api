@@ -1,5 +1,5 @@
 import React from "react";
-import { getPosts, getPostbyID } from "../utils";
+import { getPosts, getPostbyID, deletePostByID, getCommentByID, deleteCommentByID } from "../utils";
 import Modal from "./Modal";
 
 const Adminpanel = () => {
@@ -9,6 +9,19 @@ const Adminpanel = () => {
   const editPost = async (postID) => {
     const post = await getPostbyID(postID);
     console.log(post);
+  };
+
+  const deletePost = (postID) => {
+    deletePostByID(postID);
+  };
+
+  const editComment = async (commentID) => {
+    const comment = await getCommentByID(commentID);
+    console.log(comment);
+  };
+
+  const deleteComment = (commentID) => {
+    deleteCommentByID(commentID);
   };
 
   const renderPosts = async () => {
@@ -40,15 +53,33 @@ const Adminpanel = () => {
             >
               Edit
             </button>
-            <button type="button">Delete</button>
+            <button
+              type="button"
+              value={post["_id"]}
+              onClick={(event) => deletePost(event.target.value)}
+            >
+              Delete
+            </button>
             <hr />
             {post.comments.map((comment) => {
               return (
                 <div key={comment["_id"]}>
                   <p>User: {comment.user}</p>
                   <p>Comment: {comment.text}</p>
-                  <button type="button">Edit Comment</button>
-                  <button type="button">Delete Comment</button>
+                  <button
+                    type="button"
+                    value={comment["_id"]}
+                    onClick={(event) => editComment(event.target.value)}
+                  >
+                    Edit Comment
+                  </button>
+                  <button
+                    type="button"
+                    value={comment["_id"]}
+                    onClick={(event) => deleteComment(event.target.value)}
+                  >
+                    Delete Comment
+                  </button>
                 </div>
               );
             })}

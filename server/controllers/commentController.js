@@ -50,12 +50,29 @@ exports.comments_list_get = async (req, res) => {
   }
 };
 
+//get comment by ID
+exports.comment_byID_get = async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const comment = await Comment.findById(req.params.id);
+      res.json(post);
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
+  }
+};
+
 //delete comment by ID
 exports.comment_delete = async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       await Comment.deleteOne({ _id: req.params.id });
     } catch (err) {
+      console.log(err);
       res.status(400);
       res.statusMessage = "could not delete comment";
       res.send();
