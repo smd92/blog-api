@@ -20,7 +20,8 @@ function App() {
 
   const logout = () => {
     fetch("/auth/logout")
-      .then()
+      .then((res) => res.json())
+      .then((data) => console.log(data))
       .catch((err) => console.log(err));
   };
 
@@ -46,7 +47,7 @@ function App() {
             <Route
               path="/admin"
               element={
-                isAuth === false ? <Navigate to="/loginForm" /> : <Adminpanel posts={<Posts />}/>
+                isAuth === false ? <Navigate to="/loginForm" /> : <Adminpanel />
               }
             />
           </Routes>

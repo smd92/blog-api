@@ -18,14 +18,15 @@ const Posts = () => {
               <h3>{post.title}</h3>
               <p>{post.text}</p>
               <hr />
-              {post.comments.map((comment) => {
-                return (
-                  <div key={comment["_id"]}>
-                    <p>User: {comment.user}</p>
-                    <p>Comment: {comment.text}</p>
-                  </div>
-                );
-              })}
+              {post.comments.length > 0 &&
+                post.comments.map((comment) => {
+                  return (
+                    <div key={comment["_id"]}>
+                      <p>User: {comment.user}</p>
+                      <p>Comment: {comment.text}</p>
+                    </div>
+                  );
+                })}
             </div>
           );
         }

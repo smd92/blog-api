@@ -1,4 +1,5 @@
 const Comment = require("../models/comment");
+const Post = require("../models/post");
 const db = require("../db");
 const { check, validationResult } = require("express-validator");
 
@@ -55,7 +56,7 @@ exports.comment_byID_get = async (req, res) => {
   if (req.isAuthenticated()) {
     try {
       const comment = await Comment.findById(req.params.id);
-      res.json(post);
+      res.json(comment);
     } catch (err) {
       console.log(err);
     }
@@ -70,7 +71,16 @@ exports.comment_byID_get = async (req, res) => {
 exports.comment_delete = async (req, res) => {
   if (req.isAuthenticated()) {
     try {
+      const comment = await Comment.findById(req.params.id);
+      const post = await Post.findById(comment.post);
+      //delete comment from related post
+      post.comments.forEach((comment) => {
+        if (comment["_id"] == req.params.id) post.comments.pull(comment);
+      });
+      post.save();
+      //delete comment from comment collection
       await Comment.deleteOne({ _id: req.params.id });
+      res.send("success");
     } catch (err) {
       console.log(err);
       res.status(400);

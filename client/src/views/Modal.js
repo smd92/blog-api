@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
 
 function Modal(props) {
-  if (!props.show) {
-    return null;
-  }
-
   const closeOnEscapeKeyDown = (e) => {
     if ((e.charCode || e.keyCode) === 27) {
       props.onClose();
@@ -16,7 +12,11 @@ function Modal(props) {
     return function cleanup() {
       document.body.removeEventListener("keydown", closeOnEscapeKeyDown);
     };
-  }, []);
+  });
+
+  if (!props.show) {
+    return null;
+  }
 
   return (
     <div className="modal" onClick={props.onClose}>
@@ -26,7 +26,9 @@ function Modal(props) {
         </div>
         <div className="modal-body">{props.children}</div>
         <div className="modal-footer">
-          <button className="btn btn-danger" onClick={props.onClose}>Exit</button>
+          <button className="btn btn-danger" onClick={props.onClose}>
+            Exit
+          </button>
         </div>
       </div>
     </div>

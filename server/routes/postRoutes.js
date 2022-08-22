@@ -14,4 +14,10 @@ router.get("/:id", postController.post_byID_get);
 //delete post by ID
 router.delete("/:id", postController.post_delete);
 
+//publish post
+router.put("/publish/:id", postController.post_publish_put);
+
+//unpunlish post
+router.put("/unpublish/:id", postController.post_unpublish_put);
+
 module.exports = router;

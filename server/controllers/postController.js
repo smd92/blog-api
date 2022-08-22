@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const Comment = require("../models/comment");
 const db = require("../db");
 const { check, validationResult } = require("express-validator");
 
@@ -41,7 +42,7 @@ exports.post_create_post = async (req, res, next) => {
 //get all posts
 exports.posts_list_get = async (req, res) => {
   try {
-    const postList = await Post.find({ isPublic: true });
+    const postList = await Post.find();
     res.json(postList);
   } catch (err) {
     res.status(400);
@@ -70,10 +71,52 @@ exports.post_byID_get = async (req, res) => {
 exports.post_delete = async (req, res) => {
   if (req.isAuthenticated()) {
     try {
+      const post = await Post.findById(req.params.id);
+      post.comments.forEach(async (comment) => {
+        await Comment.deleteOne({ _id: comment["_id"] });
+      });
       await Post.deleteOne({ _id: req.params.id });
     } catch (err) {
       res.status(400);
       res.statusMessage = "could not delete post";
+      res.send();
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
+  }
+};
+
+exports.post_publish_put = async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const post = await Post.findById(req.params.id);
+      post.isPublic = true;
+      post.save();
+      res.send("publish success");
+    } catch (err) {
+      res.status(400);
+      res.statusMessage = "could not publish post";
+      res.send();
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
+  }
+};
+
+exports.post_unpublish_put = async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const post = await Post.findById(req.params.id);
+      post.isPublic = false;
+      post.save();
+      res.send("unpublish success");
+    } catch (err) {
+      res.status(400);
+      res.statusMessage = "could not unpublish post";
       res.send();
     }
   } else {

@@ -33,26 +33,30 @@ const deletePostByID = (postID) => {
 
 //get specific comment by ID
 const getCommentByID = async (commentID) => {
-    try {
-        const res = await fetch(`/comments/${commentID}`);
-        const comment = await res.json();
-        return comment;
-    } catch (err) {
-        console.log(err);
-    }
-}
+  try {
+    const res = await fetch(`/comments/${commentID}`);
+    const comment = await res.json();
+    return comment;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 //delete specific comment by ID
 const deleteCommentByID = (commentID) => {
-    console.log("hi")
-    try {
-      fetch(`/comments/${commentID}`, {
-        method: "DELETE",
-      }).then((res) => res.json).then((data) => console.log(data));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  try {
+    fetch(`/comments/${commentID}`, {
+      method: "DELETE",
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-
-export { getPosts, getPostbyID, deletePostByID, getCommentByID, deleteCommentByID };
+export {
+  getPosts,
+  getPostbyID,
+  deletePostByID,
+  getCommentByID,
+  deleteCommentByID,
+};
