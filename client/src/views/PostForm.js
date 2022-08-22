@@ -4,7 +4,7 @@ const PostForm = (props) => {
   return (
     <div>
       <h2>Post Form</h2>
-      <form action="/posts" method="POST">
+      <form action={props.formAction} method="POST">
         <input id="user" name="user" type="hidden" value={props.userID} />
         <div>
           <label htmlFor="title">Title</label>

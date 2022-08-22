@@ -50,7 +50,11 @@ function App() {
             <Route
               path="/admin"
               element={
-                isAuth === false ? <Navigate to="/loginForm" /> : <Adminpanel />
+                isAuth === false ? (
+                  <Navigate to="/loginForm" />
+                ) : (
+                  <Adminpanel userID={userID} />
+                )
               }
             />
             <Route
@@ -59,7 +63,7 @@ function App() {
                 isAuth === false ? (
                   <Navigate to="/loginForm" />
                 ) : (
-                  <PostForm userID={userID} />
+                  <PostForm userID={userID} formAction="/posts" />
                 )
               }
             />

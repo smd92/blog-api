@@ -1,8 +1,17 @@
 import React from "react";
 import { getPosts, deletePostByID, deleteCommentByID } from "../utils";
-const Adminpanel = () => {
+import PostForm from "./PostForm";
+import CommentForm from "./CommentForm";
+
+const Adminpanel = (props) => {
   const [posts, setPosts] = React.useState([]);
   const [adminPostnodes, setAdminPostnodes] = React.useState([]);
+  const [isEditPost, setIsEditPost] = React.useState(null);
+  const [isEditComment, setIsEditComment] = React.useState(null);
+
+  const editPost = async (postID) => {
+    setIsEditPost(true);
+  };
 
   const deletePost = async (postID) => {
     await deletePostByID(postID);
@@ -23,8 +32,12 @@ const Adminpanel = () => {
     setPosts([]);
   };
 
-  const deleteComment = (commentID) => {
-    deleteCommentByID(commentID);
+  const editComment = async (commentID) => {
+    setIsEditComment(true);
+  };
+
+  const deleteComment = async (commentID) => {
+    await deleteCommentByID(commentID);
     setPosts([]);
   };
 
@@ -66,9 +79,16 @@ const Adminpanel = () => {
             <button
               type="button"
               value={post["_id"]}
+              onClick={(event) => editPost(event.target.value)}
+            >
+              Edit Post
+            </button>
+            <button
+              type="button"
+              value={post["_id"]}
               onClick={(event) => deletePost(event.target.value)}
             >
-              Delete
+              Delete Post
             </button>
             <hr />
             {post.comments.map((comment) => {
@@ -76,6 +96,13 @@ const Adminpanel = () => {
                 <div key={comment["_id"]}>
                   <p>User: {comment.user}</p>
                   <p>Comment: {comment.text}</p>
+                  <button
+                    type="button"
+                    value={comment["_id"]}
+                    onClick={(event) => editComment(event.target.value)}
+                  >
+                    Edit Comment
+                  </button>
                   <button
                     type="button"
                     value={comment["_id"]}
@@ -97,7 +124,7 @@ const Adminpanel = () => {
     renderPosts();
   }, [posts.length]);
 
-  return (
+  return !isEditPost && !isEditComment ? (
     <div>
       <h2>Adminpanel</h2>
       {adminPostnodes}
@@ -105,6 +132,10 @@ const Adminpanel = () => {
         <a href="/postForm">New Post</a>
       </button>
     </div>
+  ) : isEditPost ? (
+    <PostForm userID={props.userID} formAction="" />
+  ) : (
+    <CommentForm userID={props.userID} formAction="" />
   );
 };
 
