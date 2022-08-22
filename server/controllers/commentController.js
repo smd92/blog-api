@@ -80,7 +80,7 @@ exports.comment_delete = async (req, res) => {
       post.save();
       //delete comment from comment collection
       await Comment.deleteOne({ _id: req.params.id });
-      res.send("success");
+      res.send("comment deleted");
     } catch (err) {
       console.log(err);
       res.status(400);

@@ -21,9 +21,9 @@ const getPostbyID = async (postID) => {
 };
 
 //delete specific post by ID
-const deletePostByID = (postID) => {
+const deletePostByID = async (postID) => {
   try {
-    fetch(`/posts/${postID}`, {
+    await fetch(`/posts/${postID}`, {
       method: "DELETE",
     });
   } catch (err) {
@@ -43,9 +43,9 @@ const getCommentByID = async (commentID) => {
 };
 
 //delete specific comment by ID
-const deleteCommentByID = (commentID) => {
+const deleteCommentByID = async (commentID) => {
   try {
-    fetch(`/comments/${commentID}`, {
+    await fetch(`/comments/${commentID}`, {
       method: "DELETE",
     });
   } catch (err) {

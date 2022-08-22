@@ -1,28 +1,31 @@
 import React from "react";
 import { getPosts, deletePostByID, deleteCommentByID } from "../utils";
-
 const Adminpanel = () => {
   const [posts, setPosts] = React.useState([]);
   const [adminPostnodes, setAdminPostnodes] = React.useState([]);
 
-  const deletePost = (postID) => {
-    deletePostByID(postID);
+  const deletePost = async (postID) => {
+    await deletePostByID(postID);
+    setPosts([]);
   };
 
-  const publishPost = (postID) => {
-    fetch(`/posts/publish/${postID}`, {
+  const publishPost = async (postID) => {
+    await fetch(`/posts/publish/${postID}`, {
       method: "PUT",
     });
+    setPosts([]);
   };
 
-  const unpublishPost = (postID) => {
-    fetch(`/posts/unpublish/${postID}`, {
+  const unpublishPost = async (postID) => {
+    await fetch(`/posts/unpublish/${postID}`, {
       method: "PUT",
     });
+    setPosts([]);
   };
 
   const deleteComment = (commentID) => {
     deleteCommentByID(commentID);
+    setPosts([]);
   };
 
   const renderPosts = async () => {
@@ -98,7 +101,9 @@ const Adminpanel = () => {
     <div>
       <h2>Adminpanel</h2>
       {adminPostnodes}
-      <button type="button">New Post</button>
+      <button type="button">
+        <a href="/postForm">New Post</a>
+      </button>
     </div>
   );
 };

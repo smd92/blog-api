@@ -6,15 +6,18 @@ import Landingpage from "./views/Landingpage";
 import Adminpanel from "./views/Adminpanel";
 import Posts from "./views/Posts";
 import LoginForm from "./views/LoginForm";
+import PostForm from "./views/PostForm";
 
 function App() {
   const [isAuth, setIsAuth] = React.useState(null);
+  const [userID, setUserID] = React.useState(null);
 
   React.useEffect(() => {
     fetch("/auth/isAuth")
       .then((res) => res.json())
       .then((data) => {
         setIsAuth(data.isAuth);
+        setUserID(data.userID);
       });
   }, [isAuth]);
 
@@ -48,6 +51,16 @@ function App() {
               path="/admin"
               element={
                 isAuth === false ? <Navigate to="/loginForm" /> : <Adminpanel />
+              }
+            />
+            <Route
+              path="/postForm"
+              element={
+                isAuth === false ? (
+                  <Navigate to="/loginForm" />
+                ) : (
+                  <PostForm userID={userID} />
+                )
               }
             />
           </Routes>

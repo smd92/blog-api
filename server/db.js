@@ -52,7 +52,7 @@ const postCreate = (postData, req, res) => {
       res.statusCode = 500;
       res.send(err);
     } else {
-      res.redirect("/");
+      res.redirect("/admin");
     }
   });
 };

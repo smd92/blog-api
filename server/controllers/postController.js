@@ -76,6 +76,7 @@ exports.post_delete = async (req, res) => {
         await Comment.deleteOne({ _id: comment["_id"] });
       });
       await Post.deleteOne({ _id: req.params.id });
+      res.send("post deleted");
     } catch (err) {
       res.status(400);
       res.statusMessage = "could not delete post";
