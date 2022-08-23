@@ -14,4 +14,7 @@ router.get("/:id", commentController.comment_byID_get);
 //delete comment by ID
 router.delete("/:id", commentController.comment_delete);
 
+//edit comment
+router.put("/editComment/:id", commentController.comment_edit_put);
+
 module.exports = router;

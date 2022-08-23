@@ -93,3 +93,31 @@ exports.comment_delete = async (req, res) => {
     });
   }
 };
+
+exports.comment_edit_put = async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      //update comment in comments collection
+      await Comment.findByIdAndUpdate(req.params.id, {
+        $set: { text: req.body.text },
+      });
+      //update comment in related post document
+      const post = await Post.findById(req.body.post);
+      post.comments.forEach((comment) => {
+        if (comment["_id"] == req.params.id) comment.text = req.body.text;
+      });
+      post.markModified("comments");
+      post.save();
+
+      res.send("edit success");
+    } catch (err) {
+      res.status(400);
+      res.statusMessage = "could not edit comment";
+      res.send();
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
+  }
+};

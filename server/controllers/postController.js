@@ -126,3 +126,23 @@ exports.post_unpublish_put = async (req, res) => {
     });
   }
 };
+
+exports.post_edit_put = async (req, res) => {
+  if (req.isAuthenticated()) {
+    try {
+      const post = await Post.findById(req.params.id);
+      post.title = req.body.title;
+      post.text = req.body.text;
+      post.save();
+      res.send("edit success");
+    } catch (err) {
+      res.status(400);
+      res.statusMessage = "could not edit post";
+      res.send();
+    }
+  } else {
+    res.status(403).send({
+      message: "Log in to access this route",
+    });
+  }
+};

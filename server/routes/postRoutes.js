@@ -20,4 +20,7 @@ router.put("/publish/:id", postController.post_publish_put);
 //unpunlish post
 router.put("/unpublish/:id", postController.post_unpublish_put);
 
+//edit post
+router.put("/editPost/:id", postController.post_edit_put);
+
 module.exports = router;

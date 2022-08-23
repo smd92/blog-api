@@ -7,6 +7,7 @@ import Adminpanel from "./views/Adminpanel";
 import Posts from "./views/Posts";
 import LoginForm from "./views/LoginForm";
 import PostForm from "./views/PostForm";
+import CommentForm from "./views/CommentForm";
 
 function App() {
   const [isAuth, setIsAuth] = React.useState(null);
@@ -62,8 +63,31 @@ function App() {
               element={
                 isAuth === false ? (
                   <Navigate to="/loginForm" />
+                ) : userID === null ? (
+                  "Loading..."
                 ) : (
-                  <PostForm userID={userID} formAction="/posts" />
+                  <PostForm
+                    userID={userID}
+                    path="/posts"
+                    method="POST"
+                    formTitle="New Post"
+                    buttonText="Add Post"
+                  />
+                )
+              }
+            />
+            <Route
+              path="/commentForm/:postid"
+              element={
+                isAuth === false ? (
+                  <Navigate to="/loginForm" />
+                ) : (
+                  <CommentForm
+                    path="/comments"
+                    method="POST"
+                    formTitle="New Comment"
+                    buttonText="Add Comment"
+                  />
                 )
               }
             />

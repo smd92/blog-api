@@ -8,8 +8,17 @@ const Adminpanel = (props) => {
   const [adminPostnodes, setAdminPostnodes] = React.useState([]);
   const [isEditPost, setIsEditPost] = React.useState(null);
   const [isEditComment, setIsEditComment] = React.useState(null);
+  const [postToEditData, setPostToEditData] = React.useState(null);
+  const [commentToEditData, setCommentToEditData] = React.useState(null);
 
-  const editPost = async (postID) => {
+  const editPost = (postID, postUser, postTitle, postText, postIsPublic) => {
+    setPostToEditData({
+      id: postID,
+      user: postUser,
+      title: postTitle,
+      text: postText,
+      isPublic: postIsPublic,
+    });
     setIsEditPost(true);
   };
 
@@ -32,7 +41,13 @@ const Adminpanel = (props) => {
     setPosts([]);
   };
 
-  const editComment = async (commentID) => {
+  const editComment = (commentID, commentPost, commentUser, commentText) => {
+    setCommentToEditData({
+      id: commentID,
+      post: commentPost,
+      user: commentUser,
+      text: commentText,
+    });
     setIsEditComment(true);
   };
 
@@ -79,7 +94,19 @@ const Adminpanel = (props) => {
             <button
               type="button"
               value={post["_id"]}
-              onClick={(event) => editPost(event.target.value)}
+              post-user={post.user}
+              post-title={post.title}
+              post-text={post.text}
+              post-ispublic={post.isPublic.toString()}
+              onClick={(event) =>
+                editPost(
+                  event.target.value,
+                  event.target.getAttribute("post-user"),
+                  event.target.getAttribute("post-title"),
+                  event.target.getAttribute("post-text"),
+                  event.target.getAttribute("post-ispublic")
+                )
+              }
             >
               Edit Post
             </button>
@@ -99,7 +126,17 @@ const Adminpanel = (props) => {
                   <button
                     type="button"
                     value={comment["_id"]}
-                    onClick={(event) => editComment(event.target.value)}
+                    comment-post={comment.post}
+                    comment-user={comment.user}
+                    comment-text={comment.text}
+                    onClick={(event) =>
+                      editComment(
+                        event.target.value,
+                        event.target.getAttribute("comment-post"),
+                        event.target.getAttribute("comment-user"),
+                        event.target.getAttribute("comment-text")
+                      )
+                    }
                   >
                     Edit Comment
                   </button>
@@ -109,6 +146,9 @@ const Adminpanel = (props) => {
                     onClick={(event) => deleteComment(event.target.value)}
                   >
                     Delete Comment
+                  </button>
+                  <button type="button">
+                    <a href={`/commentForm/${post["_id"]}`}>New Comment</a>
                   </button>
                 </div>
               );
@@ -133,9 +173,21 @@ const Adminpanel = (props) => {
       </button>
     </div>
   ) : isEditPost ? (
-    <PostForm userID={props.userID} formAction="" />
+    <PostForm
+      path={`/posts/editPost/${postToEditData.id}`}
+      method="PUT"
+      formTitle="Edit Post"
+      buttonText="Update Post"
+      postToEdit={postToEditData}
+    />
   ) : (
-    <CommentForm userID={props.userID} formAction="" />
+    <CommentForm
+      path={`/comments/editComment/${commentToEditData.id}`}
+      method="PUT"
+      formTitle="Edit Comment"
+      buttonText="Update Comment"
+      commentToEdit={commentToEditData}
+    />
   );
 };
 
